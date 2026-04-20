@@ -15,4 +15,18 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
 
     List<Libro> findByTituloContainingIgnoreCase(String titulo);
     /* Buscar libros por título, ignorando mayúsculas y minúsculas */
+
+    //Buscar libro por autor
+    List<Libro> findByAutorNombreContainingIgnoreCase(String autor);
+    /* Buscar libros por el nombre del autor, ignorando mayúsculas y minúsculas */
+
+    //Buscar libro por género
+    List<Libro> findByGenerosNombreContainingIgnoreCase(String nombre);
+    /* Buscar libros por el nombre del género, ignorando mayúsculas y minúsculas */
+
+    //Saber si el libro esta disponible
+    boolean existsByIdAndAutorIsNotNull(Long id);
+    /* Verificar si un libro existe por su ID y tiene un autor asignado */
+ 
+    
 }

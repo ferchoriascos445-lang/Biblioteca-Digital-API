@@ -7,6 +7,7 @@ import lombok.Data;
 import java.util.HashSet;
 import java.util.Set;
 
+//🔹 Entidad que representa un género literario en la biblioteca digital
 @Entity
 @Data
 @Table(name = "generos")

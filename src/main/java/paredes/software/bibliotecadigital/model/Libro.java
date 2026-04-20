@@ -6,11 +6,13 @@ import lombok.Data;
 import java.util.HashSet;
 import java.util.Set;
 
+//🔹 Entidad que representa un libro en la biblioteca digital
 @Entity
 @Data
 @Table(name = "libros")
 public class Libro {
 
+    //🔹 Atributos del libro
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,10 +25,13 @@ public class Libro {
 
     private int anioPublicacion;
 
+    // Relación muchos a uno con Autor
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "autor_id", nullable = false)
     private Autor autor;
 
+
+    // Relación muchos a muchos con Género
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "libro_genero",
@@ -40,6 +45,11 @@ public class Libro {
     public void addGenero(Genero genero) {
         this.generos.add(genero);
         genero.getLibros().add(this);
+    }
+
+    public Object map(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'map'");
     }
 }
 

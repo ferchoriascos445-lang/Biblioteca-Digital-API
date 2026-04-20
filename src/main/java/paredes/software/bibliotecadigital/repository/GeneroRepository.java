@@ -15,4 +15,7 @@ public interface GeneroRepository extends JpaRepository<Genero, Long> {
     Optional<Genero> findByNombreIgnoreCase(String nombre);
 
     // Metodo para verificar si un género existe por su nombre
+
+    // Metodo para eliminar un género por su nombre
+    void deleteByNombreIgnoreCase(String nombre);
 }
