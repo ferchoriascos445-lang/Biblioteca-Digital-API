@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
-import paredes.software.bibliotecadigital.model.Libro;
+import paredes.software.bibliotecadigital.dto.LibroRequestDTO;
+import paredes.software.bibliotecadigital.dto.LibroResponseDTO;
+
 import paredes.software.bibliotecadigital.service.LibroService;
 
 import java.util.List;
@@ -20,50 +22,50 @@ public class LibroController {
 
     // GET - Obtener todos los libros
     @GetMapping
-    public ResponseEntity<List<Libro>> getAllLibros() {
+    public ResponseEntity<List<LibroResponseDTO>> getAllLibros() {
         return ResponseEntity.ok(libroService.getAllLibros());
     }
 
     // GET - Obtener un libro por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Libro> getLibroById(@PathVariable Long id) {
+    public ResponseEntity<LibroResponseDTO> getLibroById(@PathVariable Long id) {
         return ResponseEntity.ok(libroService.getLibroById(id));
     }
 
     // GET - Obtener libros por título (busqueda parcial, ignorando mayúsculas)
     @GetMapping("/titulo/{titulo}")
-    public ResponseEntity<List<Libro>> getLibrosByTitulo(@PathVariable String titulo) {
+    public ResponseEntity<List<LibroResponseDTO>> getLibrosByTitulo(@PathVariable String titulo) {
         return ResponseEntity.ok(libroService.getLibrosByTitulo(titulo));
     }
 
     // GET - Obtener libros por el nombre del autor (busqueda parcial, ignorando mayúsculas)
     @GetMapping("/autor/{autor}")
-    public ResponseEntity<List<Libro>> getLibrosByAutor(@PathVariable String autor) {
+    public ResponseEntity<List<LibroResponseDTO>> getLibrosByAutor(@PathVariable String autor) {
         return ResponseEntity.ok(libroService.getLibrosByAutor(autor));
     }
 
     // GET - Obtener libros por el nombre del género (busqueda parcial, ignorando mayúsculas)
     @GetMapping("/genero/{genero}")
-    public ResponseEntity<List<Libro>> getLibrosByGenero(@PathVariable String genero) {
+    public ResponseEntity<List<LibroResponseDTO>> getLibrosByGenero(@PathVariable String genero) {
         return ResponseEntity.ok(libroService.getLibrosByGenero(genero));
     }
 
 
     // POST - Crear un solo libro
     @PostMapping
-    public ResponseEntity<Libro> createLibro(@RequestBody Libro libro) {
+    public ResponseEntity<LibroResponseDTO> createLibro(@RequestBody LibroRequestDTO libro) {
         return ResponseEntity.status(HttpStatus.CREATED).body(libroService.saveLibro(libro));
     }
 
     // POST - Crear varios libros a la vez
     @PostMapping("/batch")
-    public ResponseEntity<List<Libro>> createLibrosBatch(@RequestBody List<Libro> libros) {
+    public ResponseEntity<List<LibroResponseDTO>> createLibrosBatch(@RequestBody List<LibroRequestDTO> libros) {
         return ResponseEntity.status(HttpStatus.CREATED).body(libroService.saveAll(libros));
     }
 
     // PUT - Actualizar un libro
     @PutMapping("/{id}")
-    public ResponseEntity<Libro> updateLibro(@PathVariable Long id, @RequestBody Libro libroActualizado) {
+    public ResponseEntity<LibroResponseDTO> updateLibro(@PathVariable Long id, @RequestBody LibroRequestDTO libroActualizado) {
         return ResponseEntity.ok(libroService.updateLibro(id, libroActualizado));
     }
 

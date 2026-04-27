@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import paredes.software.bibliotecadigital.model.Usuario;
+import paredes.software.bibliotecadigital.dto.UsuarioRequestDTO;
+import paredes.software.bibliotecadigital.dto.UsuarioResponseDTO;
 import paredes.software.bibliotecadigital.service.UsuarioService;
 
 @RestController
@@ -27,39 +28,39 @@ public class UsuarioController {
 
     // GET - Obtener todos los usuarios de la base de datos
     @GetMapping
-    public ResponseEntity<List<Usuario>> getAllUsuarios() {
+    public ResponseEntity<List<UsuarioResponseDTO>> getAllUsuarios() {
         return ResponseEntity.ok(usuarioService.getAllUsuarios());
     }
 
     // GET - Obtener un usuario específico por su ID
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
+    public ResponseEntity<UsuarioResponseDTO> getUsuarioById(@PathVariable Long id) {
         return ResponseEntity.ok(usuarioService.getUsuarioById(id));
     }
 
     // GET - Obtener un usuario por su correo electrónico (búsqueda única)
     @GetMapping("/email/{email}")
-    public ResponseEntity<Usuario> getUsuarioByEmail(@PathVariable String email) {
+    public ResponseEntity<UsuarioResponseDTO> getUsuarioByEmail(@PathVariable String email) {
         return ResponseEntity.ok(usuarioService.getUsuarioByEmail(email));
     }
 
     // GET - Buscar usuarios por nombre y apellido (búsqueda con parámetros)
     @GetMapping("/buscar")
-    public ResponseEntity<List<Usuario>> getUsuariosByNombreAndApellido(@RequestParam String nombre, @RequestParam String apellido) {
+    public ResponseEntity<List<UsuarioResponseDTO>> getUsuariosByNombreAndApellido(@RequestParam String nombre, @RequestParam String apellido) {
         return ResponseEntity.ok(usuarioService.getUsuariosByNombreAndApellido(nombre, apellido));
     }
 
     // POST - Crear un nuevo usuario en la base de datos (retorna 201 CREATED)
     @PostMapping
-    public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
-        Usuario nuevoUsuario = usuarioService.saveUsuario(usuario);
+    public ResponseEntity<UsuarioResponseDTO> createUsuario(@RequestBody UsuarioRequestDTO usuarioDTO) {
+        UsuarioResponseDTO nuevoUsuario = usuarioService.saveUsuario(usuarioDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
     }
 
     // PUT - Actualizar un usuario existente por su ID
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuarioActualizado) {
-        Usuario usuarioActualizadoResponse = usuarioService.updateUsuario(id, usuarioActualizado);
+    public ResponseEntity<UsuarioResponseDTO> updateUsuario(@PathVariable Long id, @RequestBody UsuarioRequestDTO usuarioActualizado) {
+        UsuarioResponseDTO usuarioActualizadoResponse = usuarioService.updateUsuario(id, usuarioActualizado);
         return ResponseEntity.ok(usuarioActualizadoResponse);
     }
 

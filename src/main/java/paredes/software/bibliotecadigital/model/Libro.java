@@ -3,6 +3,8 @@ package paredes.software.bibliotecadigital.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import paredes.software.bibliotecadigital.dto.AutorResponseDTO;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,9 +49,14 @@ public class Libro {
         genero.getLibros().add(this);
     }
 
-    public Object map(Object object) {
+    public void setAutor(AutorResponseDTO autor2) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'map'");
+        throw new UnsupportedOperationException("Unimplemented method 'setAutor'");
+    }
+
+    public void setAutor(Autor autor2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setAutor'");
     }
 }
 

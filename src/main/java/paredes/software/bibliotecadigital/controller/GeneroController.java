@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import paredes.software.bibliotecadigital.model.Genero;
+import paredes.software.bibliotecadigital.dto.GeneroRequestDTO;
+import paredes.software.bibliotecadigital.dto.GeneroResponseDTO;
 import paredes.software.bibliotecadigital.service.GeneroService;
 
 @RestController
@@ -26,31 +27,31 @@ public class GeneroController {
 
     //GET - obtener todos los géneros
     @GetMapping
-    public ResponseEntity<List<Genero>> getAllGeneros() {
+    public ResponseEntity<List<GeneroResponseDTO>> getAllGeneros() {
         return ResponseEntity.ok(generoService.getAllGeneros());
     }
     
     //GET - obtener un género por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Genero> getGeneroById(@PathVariable Long id) {
+    public ResponseEntity<GeneroResponseDTO> getGeneroById(@PathVariable Long id) {
         return ResponseEntity.ok(generoService.getGeneroById(id));
     }
 
     //GET - obtener un género por nombre
     @GetMapping("/nombre/{nombre}")
-    public ResponseEntity<Genero> getGeneroByNombre(@PathVariable String nombre) {
+    public ResponseEntity<GeneroResponseDTO> getGeneroByNombre(@PathVariable String nombre) {
         return ResponseEntity.ok(generoService.getGeneroByNombre(nombre));
     }
 
     //POST - crear un nuevo género
     @PostMapping
-    public ResponseEntity<Genero> createGenero(@RequestBody Genero genero) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(generoService.saveGenero(genero));
+    public ResponseEntity<GeneroResponseDTO> createGenero(@RequestBody GeneroRequestDTO generoDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(generoService.saveGenero(generoDTO));
     }
 
     //PUT - actualizar un género existente
     @PutMapping("/{id}")
-    public ResponseEntity<Genero> updateGenero(@PathVariable Long id, @RequestBody Genero generoActualizado) {
+    public ResponseEntity<GeneroResponseDTO> updateGenero(@PathVariable Long id, @RequestBody GeneroRequestDTO generoActualizado) {
         return ResponseEntity.ok(generoService.updateGenero(id, generoActualizado));
     }
     

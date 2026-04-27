@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import paredes.software.bibliotecadigital.dto.PrestamoRequestDTO;
+import paredes.software.bibliotecadigital.dto.PrestamoResponseDTO;
 import paredes.software.bibliotecadigital.model.Prestamo;
 import paredes.software.bibliotecadigital.service.PrestamoService;
 
@@ -28,79 +30,75 @@ public class PrestamoController {
 
     // GET - Obtener todos los préstamos
     @GetMapping
-    public ResponseEntity<List<Prestamo>> getAllPrestamos() {
+    public ResponseEntity<List<PrestamoResponseDTO>> getAllPrestamos() {
         return ResponseEntity.ok(prestamoService.getAllPrestamos());
     }
-    
+
     // GET - Obtener un préstamo por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Prestamo> getPrestamoById(@PathVariable Long id) {
+    public ResponseEntity<PrestamoResponseDTO> getPrestamoById(@PathVariable Long id) {
         return ResponseEntity.ok(prestamoService.getPrestamoById(id));
     }
-    
+
     // GET - Obtener préstamos por ID de usuario
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<Prestamo>> getPrestamosByUsuarioId(@PathVariable Long usuarioId) {
+    public ResponseEntity<List<PrestamoResponseDTO>> getPrestamosByUsuarioId(@PathVariable Long usuarioId) {
         return ResponseEntity.ok(prestamoService.getPrestamosByUsuarioId(usuarioId));
     }
-    
+
     // GET - Obtener préstamos por ID de libro
     @GetMapping("/libro/{libroId}")
-    public ResponseEntity<List<Prestamo>> getPrestamosByLibroId(@PathVariable Long libroId) {
+    public ResponseEntity<List<PrestamoResponseDTO>> getPrestamosByLibroId(@PathVariable Long libroId) {
         return ResponseEntity.ok(prestamoService.getPrestamosByLibroId(libroId));
     }
-    
+
     // GET - Obtener préstamos por estado (Activo, Devuelto, Vencido)
     @GetMapping("/estado/{estado}")
-    public ResponseEntity<List<Prestamo>> getPrestamosByEstado(@PathVariable String estado) {
+    public ResponseEntity<List<PrestamoResponseDTO>> getPrestamosByEstado(@PathVariable String estado) {
         Prestamo.EstadoPrestamo estadoEnum = Prestamo.EstadoPrestamo.valueOf(estado.toUpperCase());
         return ResponseEntity.ok(prestamoService.getPrestamosByEstado(estadoEnum));
     }
-    
+
     // GET - Obtener préstamos activos por usuario
     @GetMapping("/usuario/{usuarioId}/activos")
-    public ResponseEntity<List<Prestamo>> getActivosByUsuarioId(@PathVariable Long usuarioId) {
+    public ResponseEntity<List<PrestamoResponseDTO>> getActivosByUsuarioId(@PathVariable Long usuarioId) {
         return ResponseEntity.ok(prestamoService.getPrestamosActivosByUsuario(usuarioId));
     }
-    
+
     // GET - Obtener préstamos por rango de fechas
     @GetMapping("/rango-fechas")
-    public ResponseEntity<List<Prestamo>> getPrestamosByRangoFechas(@RequestParam String fechaInicio, @RequestParam String fechaFin) {
+    public ResponseEntity<List<PrestamoResponseDTO>> getPrestamosByRangoFechas(
+            @RequestParam String fechaInicio, @RequestParam String fechaFin) {
         LocalDate inicio = LocalDate.parse(fechaInicio);
         LocalDate fin = LocalDate.parse(fechaFin);
         return ResponseEntity.ok(prestamoService.getPrestamosBetween(inicio, fin));
     }
-    
+
     // GET - Obtener préstamos vencidos
     @GetMapping("/vencidos")
-    public ResponseEntity<List<Prestamo>> getVencidos() {
+    public ResponseEntity<List<PrestamoResponseDTO>> getVencidos() {
         return ResponseEntity.ok(prestamoService.getPrestamosVencidos());
     }
-    
+
     // POST - Crear un nuevo préstamo
     @PostMapping
-    public ResponseEntity<Prestamo> createPrestamo(@RequestBody Prestamo prestamo) {
-        Prestamo nuevoPrestamo = prestamoService.savePrestamo(prestamo);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoPrestamo);
+    public ResponseEntity<PrestamoResponseDTO> createPrestamo(@RequestBody PrestamoRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(prestamoService.createPrestamo(dto));
     }
-    
+
     // PUT - Actualizar un préstamo existente
     @PutMapping("/{id}")
-    public ResponseEntity<Prestamo> updatePrestamo(@PathVariable Long id, @RequestBody Prestamo prestamoActualizado) {
-        Prestamo prestamoActualizadoResponse = prestamoService.updatePrestamo(id, prestamoActualizado);
-        return ResponseEntity.ok(prestamoActualizadoResponse);
+    public ResponseEntity<PrestamoResponseDTO> updatePrestamo(
+            @PathVariable Long id, @RequestBody PrestamoRequestDTO dto) {
+        return ResponseEntity.ok(prestamoService.updatePrestamo(id, dto));
     }
-    
+
     // PUT - Marcar un préstamo como devuelto
     @PutMapping("/{id}/devolver")
     public ResponseEntity<Prestamo> marcarComoDevuelto(@PathVariable Long id) {
-        Prestamo prestamo = prestamoService.getPrestamoById(id);
-        prestamo.setEstado(Prestamo.EstadoPrestamo.DEVUELTO);
-        prestamo.setFechaDevolucion(LocalDate.now());
-        Prestamo prestamoActualizado = prestamoService.updatePrestamo(id, prestamo);
-        return ResponseEntity.ok(prestamoActualizado);
+        return ResponseEntity.ok(prestamoService.marcarComoDevuelto(id));
     }
-    
+
     // DELETE - Eliminar un préstamo por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePrestamo(@PathVariable Long id) {
@@ -108,6 +106,5 @@ public class PrestamoController {
         return ResponseEntity.noContent().build();
     }
 }
-
 
 
